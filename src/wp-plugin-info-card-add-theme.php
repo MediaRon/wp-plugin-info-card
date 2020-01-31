@@ -136,8 +136,8 @@ function wppic_theme_widget_item( $content, $wppic_data, $type ){
 	if( $type == 'theme' ){
 
 		//Date format Internationalizion
-		global 	$wppicDateFormat;
-		$wppic_data->last_updated = date_i18n( $wppicDateFormat, strtotime( $wppic_data->last_updated ) );
+		global 	$wppic_date_format;
+		$wppic_data->last_updated = date_i18n( $wppic_date_format, strtotime( $wppic_data->last_updated ) );
 
 		$content .= '<div class="wp-pic-item">';
 		$content .= '<a class="wp-pic-widget-name" href="' . $wppic_data->url . '" target="_blank" title="' . __( 'WordPress.org Plugin Page', 'wp-plugin-info-card' ) . '">' . $wppic_data->name .'</a>';

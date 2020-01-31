@@ -129,10 +129,10 @@ add_action( 'admin_init', 'wppic_register_settings' );
  * Admin page structure
  ***************************************************************/
 function wppic_settings_page() {
-	global 	$wppicSettings;
+	global 	$wppic_settings;
 
 	//Get default card color shceme
-	$scheme = $wppicSettings[ 'colorscheme' ];
+	$scheme = $wppic_settings[ 'colorscheme' ];
 	if(	$scheme == 'default' ){
 		$scheme = '';
 	}
@@ -229,8 +229,8 @@ function wppic_settings_page() {
  * Color Scheme dropdown
  ***************************************************************/
 function wppic_color_scheme() {
-	global 	$wppicSettings;
-	$scheme = $wppicSettings[ 'colorscheme' ];
+	global 	$wppic_settings;
+	$scheme = $wppic_settings[ 'colorscheme' ];
 
 	$content = '<td>';
 		$content .= '<select id="wppic-color-scheme" name="wppic_settings[colorscheme]">';
@@ -258,11 +258,11 @@ function wppic_color_scheme() {
  * Checkbox input
  ***************************************************************/
 function wppic_checkbox( $args ) {
-	global 	$wppicSettings;
+	global 	$wppic_settings;
 	$content = '<td>';
 		$content .= '<input type="checkbox" id="' . $args[ 'id' ] . '" name="wppic_settings[' . $args[ 'name' ] . ']"  value="1" ';
-		if( isset( $wppicSettings[ $args[ 'name' ] ] ) ) {
-			$content .= checked( 1, $wppicSettings[ $args[ 'name' ] ], false );
+		if( isset( $wppic_settings[ $args[ 'name' ] ] ) ) {
+			$content .= checked( 1, $wppic_settings[ $args[ 'name' ] ], false );
 		}
 		$content .= '/>';
 		$content .= '<label for="' . $args[ 'id' ] . '">' . $args[ 'label' ] . '</label>';
@@ -275,7 +275,7 @@ function wppic_checkbox( $args ) {
  * Dashboard widget plugin list
  ***************************************************************/
 function wppic_list_form() {
-	global 	$wppicSettings;
+	global 	$wppic_settings;
 	$wppicListForm = array();
 	$wppicListForm = apply_filters( 'wppic_add_list_form', $wppicListForm );
 
@@ -286,8 +286,8 @@ function wppic_list_form() {
 			$content .= '<div class="form-list">';
 				$content .= '<button class="button wppic-add-fields" data-type="' . $wppicItemForm[0] . '">' . $wppicItemForm[1] . '</button><input type="text" name="wppic-add" class="wppic-add"  value="">';
 				$content .= '<ul id="wppic-' . $wppicItemForm[0] . '" class="wppic-list">';
-						if( !empty( $wppicSettings[ $wppicItemForm[0] ] ) ){
-							foreach($wppicSettings[ $wppicItemForm[0] ] as $item){
+						if( !empty( $wppic_settings[ $wppicItemForm[0] ] ) ){
+							foreach($wppic_settings[ $wppicItemForm[0] ] as $item){
 								$content .= '<li class="wppic-dd"><input type="text" name="wppic_settings[' . $wppicItemForm[0] . '][]"  value="' . $item . '"><span class="wppic-remove-field" title="remove"></span></li>';
 							}
 						}

@@ -8,12 +8,13 @@
  * Version: 3.1.20
  * Domain Path: /langs
  * Text Domain: wp-plugin-info-card
+ *
+ * @package wp-plugin-info-card
  */
-
 
 /***************************************************************
  * SECURITY : Exit if accessed directly
-***************************************************************/
+ ***************************************************************/
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Direct acces not allowed!' );
 }
@@ -21,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /***************************************************************
  * Define constants
- ***************************************************************/
+ */
 if ( ! defined( 'WPPIC_VERSION' ) ) {
 	define( 'WPPIC_VERSION', '3.1.20' );
 }
@@ -47,116 +48,146 @@ if ( ! defined( 'WPPIC_ID' ) ) {
 
 /***************************************************************
  * Get options
- ***************************************************************/
-global 	$wppicSettings;
-$wppicSettings = get_option( 'wppic_settings' );
+ */
+global  $wppic_settings;
+$wppic_settings = get_option( 'wppic_settings' );
 
-global 	$wppicDateFormat;
-$wppicDateFormat = get_option( 'date_format' );
+global  $wppic_date_format;
+$wppic_date_format = get_option( 'date_format' );
 
 
 /***************************************************************
  * Load plugin files
- ***************************************************************/
-$wppicFiles = array( 'api','shortcode','admin','widget','ui', 'add-plugin', 'add-theme', 'query' );
-foreach( $wppicFiles as $wppicFile ){
-	require_once( WPPIC_PATH . 'wp-plugin-info-card-' . $wppicFile . '.php' );
+ */
+$wppic_files = array( 'api', 'shortcode', 'admin', 'widget', 'ui', 'add-plugin', 'add-theme', 'query' );
+foreach ( $wppic_files as $wppic_file ) {
+	require_once WPPIC_PATH . 'wp-plugin-info-card-' . $wppic_file . '.php';
 }
 
 
-/***************************************************************
- * Load plugin textdomain
- ***************************************************************/
+/**
+ * Load the plugin's text domain.
+ */
 function wppic_load_textdomain() {
 	$path = dirname( plugin_basename( __FILE__ ) ) . '/langs/';
-	load_plugin_textdomain( 'wp-plugin-info-card', FALSE, $path );
+	load_plugin_textdomain( 'wp-plugin-info-card', false, $path );
 }
 add_action( 'init', 'wppic_load_textdomain' );
 
 
-/***************************************************************
- * Add settings link on plugin list page
- ***************************************************************/
+/**
+ * Add settings to the plugin's row.
+ *
+ * @see plugin_action_links
+ * @since 3.2.0
+ *
+ * @param array $links Settings array.
+ *
+ * @return array Updated settings array.
+ */
 function wppic_settings_link( $links ) {
-  $links[] = '<a href="' . admin_url( 'options-general.php?page=' . WPPIC_ID ) . '" title="'. __( 'WP Plugin Info Card Settings', 'wp-plugin-info-card' ) .'">' . __( 'Settings', 'wp-plugin-info-card' ) . '</a>';
-  return $links;
+	$links[] = '<a href="' . esc_url( admin_url( 'options-general.php?page=' . WPPIC_ID ) ) . '" title="' . esc_attr__( 'WP Plugin Info Card Settings', 'wp-plugin-info-card' ) . '">' . esc_html__( 'Settings', 'wp-plugin-info-card' ) . '</a>';
+	return $links;
 }
 add_filter( 'plugin_action_links_' . WPPIC_BASE, 'wppic_settings_link' );
 
-
-/***************************************************************
- * Add custom meta link on plugin list page
- ***************************************************************/
+/**
+ * Add custom meta link on plugin list page.
+ *
+ * @see plugin_row_meta
+ * @since 3.2.0
+ *
+ * @param array  $links Add links to the plugin row.
+ * @param string $file The path to the plugin file.
+ *
+ * @return array Updated links to the plugin row.
+ */
 function wppic_meta_links( $links, $file ) {
-	if ( $file === 'wp-plugin-info-card/wp-plugin-info-card.php' ) {
-		$links[] = '<a href="https://mediaron.com/wp-plugin-info-card/" target="_blank" title="'. __( 'Documentation and examples', 'wp-plugin-info-card' ) .'"><strong>'. __( 'Documentation and examples', 'wp-plugin-info-card' ) .'</strong></a>';
-		$links[] = '<a href="http://b-website.com/category/plugins" target="_blank" title="'. __( 'More plugins by b*web', 'wp-plugin-info-card' ) .'">'. __( 'More plugins by b*web', 'wp-plugin-info-card' ) .'</a>';
-		$links[] = '<a href="https://mediaron.com/project-type/wordpress-plugins/" target="_blank" title="'. __( 'More plugins by MediaRon', 'wp-plugin-info-card' ) .'">'. __( 'More plugins by MediaRon', 'wp-plugin-info-card' ) .'</a>';
+	if ( 'wp-plugin-info-card/wp-plugin-info-card.php' === $file ) {
+		$links[] = '<a href="https://mediaron.com/wp-plugin-info-card/" target="_blank" title="' . __( 'Documentation and examples', 'wp-plugin-info-card' ) . '"><strong>' . __( 'Documentation and examples', 'wp-plugin-info-card' ) . '</strong></a>';
+		$links[] = '<a href="http://b-website.com/category/plugins" target="_blank" title="' . __( 'More plugins by b*web', 'wp-plugin-info-card' ) . '">' . __( 'More plugins by b*web', 'wp-plugin-info-card' ) . '</a>';
+		$links[] = '<a href="https://mediaron.com/project-type/wordpress-plugins/" target="_blank" title="' . __( 'More plugins by MediaRon', 'wp-plugin-info-card' ) . '">' . __( 'More plugins by MediaRon', 'wp-plugin-info-card' ) . '</a>';
 	}
 	return $links;
 }
 add_filter( 'plugin_row_meta', 'wppic_meta_links', 10, 2 );
 
 
-/***************************************************************
- * Admin Panel Favico
- ***************************************************************/
+/**
+ * Add a site icon to WP Plugin Info Card admin page.
+ *
+ * @see admin_head
+ * @since 3.2.0
+ */
 function wppic_add_favicon() {
 	$screen = get_current_screen();
-	if ( $screen->id != 'toplevel_page_' . WPPIC_ID )
+	if ( 'toplevel_page_' . WPPIC_ID !== $screen->id ) {
 		return;
+	}
 
 	$favicon_url = WPPIC_URL . 'img/wppic.svg';
-	echo '<link rel="shortcut icon" href="' . $favicon_url . '" />';
+	echo '<link rel="shortcut icon" href="' . esc_url( $favicon_url ) . '" />';
 }
 add_action( 'admin_head', 'wppic_add_favicon' );
 
 
-/***************************************************************
- * Purge all plugin transients function
- ***************************************************************/
-function wppic_delete_transients(){
+/**
+ * Purge all expired transients.
+ */
+function wppic_delete_transients() {
 	global $wpdb;
-	/*if( extension_loaded( 'Memcache' ) )
-		return;*/
-	$wppic_transients = $wpdb->get_results(
+	$wppic_transients = $wpdb->get_results( // phpcs:ignore
 		"SELECT option_name AS name,
 		option_value AS value FROM $wpdb->options
-		WHERE option_name LIKE '_transient_wppic_%'"
+		WHERE option_name LIKE '_transient_wppic_%'", // phpcs:ignore
+		ARRAY_A
 	);
-	foreach( ( array ) $wppic_transients as $singleTransient ){
-		delete_transient( str_replace( '_transient_', '', $singleTransient->name ) );
+	foreach ( $wppic_transients as $single_transient ) {
+		delete_transient( str_replace( '_transient_', '', $single_transient['name'] ) );
 	}
 }
 
 
-/***************************************************************
- * Cron to purge all plugin transients every weeks
- ***************************************************************/
+/**
+ * Cron to schedule weekly cleaning of transients.
+ *
+ * @see cron_schedules
+ * @since 3.2.0
+ *
+ * @param array $schedules The cron schedules.
+ *
+ * @return array Updated schedules.
+ */
 function wppic_add_weekly( $schedules ) {
-	$schedules[ 'wppic-weekly' ] = array(
-		'interval' => 604800,
-		'display' => __( 'Once Weekly' )
+	$schedules['wppic-weekly'] = array(
+		'interval' => WEEK_IN_SECONDS,
+		'display'  => __( 'Once Weekly' ),
 	);
 	return $schedules;
 }
 add_filter( 'cron_schedules', 'wppic_add_weekly' );
 
+/**
+ * Schedule an event to delete outdated transients.
+ *
+ * @see register_activation_hook
+ * @since 3.2.0
+ */
 function wppic_cron_activation() {
-	wp_schedule_event( current_time( 'timestamp' ), 'wppic-weekly', 'wppic_daily_cron' );
+	wp_schedule_event( time(), 'wppic-weekly', 'wppic_daily_cron' );
 }
 add_action( 'wppic_daily_cron', 'wppic_delete_transients' );
 
 
-/***************************************************************
- * Remove plugin settings from DB on plugin deletion
- ***************************************************************/
+/**
+ * Uninstall callback for uninstalling WP Plugin Info Card.
+ */
 function wppic_uninstall() {
-	// Remove option from DB
+	// Remove option from DB.
 	delete_option( 'wppic_settings' );
-	//deactivate cron
+	// deactivate cron.
 	wp_clear_scheduled_hook( 'wppic_daily_cron' );
-	//Purge transients
+	// Purge transients.
 	wppic_delete_transients();
 }
 
@@ -165,7 +196,7 @@ function wppic_uninstall() {
  * Hooks for install & uninstall
  ***************************************************************/
 function wppic_activation() {
-	register_uninstall_hook( __FILE__,  'wppic_uninstall' );
+	register_uninstall_hook( __FILE__, 'wppic_uninstall' );
 }
 register_activation_hook( __FILE__, 'wppic_activation' );
 register_activation_hook( __FILE__, 'wppic_cron_activation' );
@@ -180,6 +211,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Block Initializer.
  */
-if( function_exists( 'register_block_type' ) ) {
+if ( function_exists( 'register_block_type' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . 'src/init.php';
 }

@@ -23,13 +23,13 @@ add_action( 'wppic_enqueue_scripts', 'wppic_register_sripts' );
  * Enqueue Scripts action hook
  ***************************************************************/
 function wppic_print_sripts() {
-	global  $wppicSettings;
+	global  $wppic_settings;
 
 	$wppicAjax = '<script>// <![CDATA[
 	var wppicAjax = { ajaxurl : "' . admin_url( 'admin-ajax.php' ) . '" };
 	 // ]]></script>';
 
-	if ( isset( $wppicSettings['enqueue'] ) && $wppicSettings['enqueue'] == true ) {
+	if ( isset( $wppic_settings['enqueue'] ) && $wppic_settings['enqueue'] == true ) {
 
 		echo $wppicAjax;
 		do_action( 'wppic_enqueue_scripts' );
@@ -156,7 +156,7 @@ function wppic_shortcode_function( $atts, $content = '' ) {
 	);
 	// Use "shortcode_atts_wppic_default" filter to edit shortcode parameters default values or add your owns.
 
-	global  $wppicSettings;
+	global  $wppic_settings;
 
 	// Global var to enqueue scripts + ajax param if is set to yes
 	global $wppicSripts;
@@ -272,7 +272,7 @@ function wppic_shortcode_function( $atts, $content = '' ) {
 
 				// Color scheme
 				if ( empty( $scheme ) ) {
-					$scheme = $wppicSettings['colorscheme'];
+					$scheme = $wppic_settings['colorscheme'];
 					if ( $scheme == 'default' ) {
 						$scheme = '';
 					}
@@ -383,7 +383,7 @@ function wppic_shortcode_function( $atts, $content = '' ) {
 
 			// Color scheme
 			if ( empty( $scheme ) ) {
-				$scheme = $wppicSettings['colorscheme'];
+				$scheme = $wppic_settings['colorscheme'];
 				if ( $scheme == 'default' ) {
 					$scheme = '';
 				}
@@ -489,13 +489,13 @@ function wppic_shortcode_content( $type = null, $slug = null, $image = null, $ex
 	}
 
 	// Date format Internationalizion
-	global  $wppicDateFormat;
-	$wppic_data->last_updated = date_i18n( $wppicDateFormat, strtotime( $wppic_data->last_updated ) );
+	global  $wppic_date_format;
+	$wppic_data->last_updated = date_i18n( $wppic_date_format, strtotime( $wppic_data->last_updated ) );
 
 	// Prepare the credit
-	global  $wppicSettings;
+	global  $wppic_settings;
 	$credit = '';
-	if ( isset( $wppicSettings['credit'] ) && $wppicSettings['credit'] == true ) {
+	if ( isset( $wppic_settings['credit'] ) && $wppic_settings['credit'] == true ) {
 		$credit .= '<a className="wp-pic-credit" href="https://mediaron.com/wp-plugin-info-card/" target="_blank" data-tooltip="';
 		$credit .= __( 'This card has been generated with WP Plugin Info Card', 'wp-plugin-info-card' );
 		$credit .= '"></a>';
