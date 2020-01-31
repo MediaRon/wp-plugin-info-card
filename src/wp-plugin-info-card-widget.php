@@ -34,7 +34,7 @@ if ( ! function_exists( 'wppic_dashboard_widgets' ) ) {
 	 */
 	function wppic_add_dashboard_widgets() {
 		global  $wppic_settings;
-		if ( isset( $wppic_settings['widget'] ) && true === $wppic_settings['widget'] ) {
+		if ( isset( $wppic_settings['widget'] ) && true === filter_var( $wppic_settings['widget'], FILTER_VALIDATE_BOOLEAN ) ) {
 			wp_add_dashboard_widget( 'wppic-dashboard-widget', '<img src="' . WPPIC_URL . 'img/wppic.svg" class="wppic-logo" alt="b*web" style="display:none"/>&nbsp;&nbsp;' . WPPIC_NAME . ' board', 'wppic_widgets' );
 			add_action( 'admin_enqueue_scripts', 'wppic_widget_enqueue' );
 		}
@@ -86,7 +86,7 @@ function wppic_widgets() {
 			}
 
 			if ( isset( $wppic_settings['ajax'] ) && true === filter_var( $wppic_settings['ajax'], FILTER_VALIDATE_BOOLEAN ) ) {
-				$content .= '<div class="wp-pic-loading" style="background-image: url( ' . admin_url() . 'images/spinner-2x.gif);" data-type="' . $wppic_type[0] . '" data-list="' . htmlspecialchars( json_encode( ( $wppic_settings[ $wppic_type[1] ] ) ), ENT_QUOTES, 'UTF-8' ) . '"></div>';
+				$content .= '<div class="wp-pic-loading" style="background-image: url( ' . admin_url() . 'images/spinner-2x.gif);" data-type="' . $wppic_type[0] . '" data-list="' . htmlspecialchars( wp_json_encode( ( $wppic_settings[ $wppic_type[1] ] ) ), ENT_QUOTES, 'UTF-8' ) . '"></div>';
 			} else {
 				$content .= wppic_widget_render( $wppic_type[0], $wppic_settings[ $wppic_type[1] ] );
 			}
