@@ -339,7 +339,7 @@ function wppic_block_editor( $attributes ) {
 		'ajax'        => $attributes['ajax'],
 		'scheme'      => $attributes['scheme'],
 		'layout'      => $attributes['layout'],
-		'multi'       => isset( $attributes['multi'] ) ? filter_var( $attributes['multi'], FILTER_VALIDATE_BOOLEAN ) : false,
+		'multi'       => true,
 	);
 	$html = '';
 	if ( '' !== $attributes['width'] ) {

@@ -321,7 +321,7 @@ function wppic_shortcode_function( $atts, $content = '' ) {
 					$content .= '<div style="clear:both"></div>';
 				}
 
-				$content .= sprintf( '<div class="wp-pic-wrapper %s %s %s" %s>', esc_attr( $block_alignment ), esc_attr( $layout ), $multi ? 'multi' : '', $style );
+				$content .= sprintf( '<div class="wp-pic-wrapper %s %s">', esc_attr( $block_alignment ), esc_attr( $layout ) );
 				if ( $alignCenter ) {
 					$content .= '<div class="wp-pic-center">';
 				}
