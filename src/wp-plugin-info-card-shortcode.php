@@ -132,6 +132,15 @@ function wppic_get_asset_data() {
 		if ( isset( $slug_data->last_updated ) ) {
 			$slug_data->last_updated = human_time_diff( strtotime( $slug_data->last_updated ), time() ) . ' ' . _x( 'ago', 'Last time updated', 'wp-plugin-info-card' );
 		}
+		if ( ! $slug_data ) {
+			$slug_data        = new stdClass();
+			$slug_data->valid = false;
+			$slug_data->slug  = $asset_slug;
+			$slug_data->type  = $type;
+		} else {
+			$slug_data->valid = true;
+		}
+
 		$data[] = $slug_data;
 	}
 

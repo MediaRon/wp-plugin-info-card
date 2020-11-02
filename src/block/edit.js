@@ -88,8 +88,16 @@ const WPPluginInfoCard = ( props ) => {
 		return cardDataArray.map( ( cardData, key ) => {
 			return (
 				<Fragment>
-					{ ! cardData && <SlugNotFound /> }
-					{ cardData && 'flex' === layout && 'plugin' === type && (
+					{ ! cardData.valid && (
+						<SlugNotFound
+							type={ cardData.type }
+							slug={ cardData.slug }
+							align={ align }
+						/>
+					) }
+					{ cardData.valid &&
+						'flex' === layout &&
+						'plugin' === type && (
 						<PluginFlex
 							key={ key }
 							scheme={ scheme }
@@ -98,7 +106,9 @@ const WPPluginInfoCard = ( props ) => {
 							align={ align }
 						/>
 					) }
-					{ cardData && 'card' === layout && 'plugin' === type && (
+					{ cardData.valid &&
+						'card' === layout &&
+						'plugin' === type && (
 						<PluginCard
 							key={ key }
 							scheme={ scheme }
@@ -107,7 +117,9 @@ const WPPluginInfoCard = ( props ) => {
 							align={ align }
 						/>
 					) }
-					{ cardData && 'large' === layout && 'plugin' === type && (
+					{ cardData.valid &&
+						'large' === layout &&
+						'plugin' === type && (
 						<PluginLarge
 							key={ key }
 							scheme={ scheme }
@@ -116,7 +128,7 @@ const WPPluginInfoCard = ( props ) => {
 							align={ align }
 						/>
 					) }
-					{ cardData &&
+					{ cardData.valid &&
 						'wordpress' === layout &&
 						'plugin' === type && (
 						<PluginWordPress
@@ -127,7 +139,9 @@ const WPPluginInfoCard = ( props ) => {
 							align={ align }
 						/>
 					) }
-					{ cardData && 'flex' === layout && 'theme' === type && (
+					{ cardData.valid &&
+						'flex' === layout &&
+						'theme' === type && (
 						<ThemeFlex
 							key={ key }
 							scheme={ scheme }
@@ -136,7 +150,7 @@ const WPPluginInfoCard = ( props ) => {
 							align={ align }
 						/>
 					) }
-					{ cardData &&
+					{ cardData.valid &&
 						'wordpress' === layout &&
 						'theme' === type && (
 						<ThemeWordPress
@@ -147,7 +161,9 @@ const WPPluginInfoCard = ( props ) => {
 							align={ align }
 						/>
 					) }
-					{ cardData && 'large' === layout && 'theme' === type && (
+					{ cardData.valid &&
+						'large' === layout &&
+						'theme' === type && (
 						<ThemeLarge
 							key={ key }
 							scheme={ scheme }
@@ -156,7 +172,9 @@ const WPPluginInfoCard = ( props ) => {
 							align={ align }
 						/>
 					) }
-					{ cardData && 'card' === layout && 'theme' === type && (
+					{ cardData.valid &&
+						'card' === layout &&
+						'theme' === type && (
 						<ThemeCard
 							key={ key }
 							scheme={ scheme }

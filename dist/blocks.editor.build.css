@@ -152,3 +152,18 @@
 .wppic-block input {
   display: inline-block;
   width: 100%; }
+
+.wp-pic-not-found {
+  background-color: #FFF;
+  padding: 40px; }
+  .wp-pic-not-found ul {
+    text-align: left;
+    list-style-type: none;
+    margin: 0;
+    padding: 0; }
+    .wp-pic-not-found ul li {
+      list-style-type: none; }
+      .wp-pic-not-found ul li span {
+        display: inline-block; }
+      .wp-pic-not-found ul li .wp-pic-not-found-type:first-letter {
+        text-transform: capitalize; }
