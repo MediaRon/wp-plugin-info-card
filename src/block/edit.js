@@ -15,6 +15,7 @@ import ThemeFlex from './templates/ThemeFlex';
 import ThemeWordPress from './templates/ThemeWordPress';
 import ThemeLarge from './templates/ThemeLarge';
 import ThemeCard from './templates/ThemeCard';
+import SlugNotFound from './templates/SlugNotFound';
 import Logo from './Logo';
 const { Fragment, useEffect, useState } = wp.element;
 
@@ -84,67 +85,80 @@ const WPPluginInfoCard = ( props ) => {
 	}, [] );
 
 	const outputInfoCards = ( cardDataArray ) => {
-		return cardDataArray.map( ( cardData ) => {
+		return cardDataArray.map( ( cardData, key ) => {
 			return (
 				<Fragment>
-					{ 'flex' === layout && 'plugin' === type && (
+					{ ! cardData && <SlugNotFound /> }
+					{ cardData && 'flex' === layout && 'plugin' === type && (
 						<PluginFlex
+							key={ key }
 							scheme={ scheme }
 							image={ image }
 							data={ cardData }
 							align={ align }
 						/>
 					) }
-					{ 'card' === layout && 'plugin' === type && (
+					{ cardData && 'card' === layout && 'plugin' === type && (
 						<PluginCard
+							key={ key }
 							scheme={ scheme }
 							image={ image }
 							data={ cardData }
 							align={ align }
 						/>
 					) }
-					{ 'large' === layout && 'plugin' === type && (
+					{ cardData && 'large' === layout && 'plugin' === type && (
 						<PluginLarge
+							key={ key }
 							scheme={ scheme }
 							image={ image }
 							data={ cardData }
 							align={ align }
 						/>
 					) }
-					{ 'wordpress' === layout && 'plugin' === type && (
+					{ cardData &&
+						'wordpress' === layout &&
+						'plugin' === type && (
 						<PluginWordPress
+							key={ key }
 							scheme={ scheme }
 							image={ image }
 							data={ cardData }
 							align={ align }
 						/>
 					) }
-					{ 'flex' === layout && 'theme' === type && (
+					{ cardData && 'flex' === layout && 'theme' === type && (
 						<ThemeFlex
+							key={ key }
 							scheme={ scheme }
 							image={ image }
 							data={ cardData }
 							align={ align }
 						/>
 					) }
-					{ 'wordpress' === layout && 'theme' === type && (
+					{ cardData &&
+						'wordpress' === layout &&
+						'theme' === type && (
 						<ThemeWordPress
+							key={ key }
 							scheme={ scheme }
 							image={ image }
 							data={ cardData }
 							align={ align }
 						/>
 					) }
-					{ 'large' === layout && 'theme' === type && (
+					{ cardData && 'large' === layout && 'theme' === type && (
 						<ThemeLarge
+							key={ key }
 							scheme={ scheme }
 							image={ image }
 							data={ cardData }
 							align={ align }
 						/>
 					) }
-					{ 'card' === layout && 'theme' === type && (
+					{ cardData && 'card' === layout && 'theme' === type && (
 						<ThemeCard
+							key={ key }
 							scheme={ scheme }
 							image={ image }
 							data={ cardData }
@@ -201,8 +215,14 @@ const WPPluginInfoCard = ( props ) => {
 		{ value: 'flex', label: __( 'Flex', 'wp-plugin-info-card' ) },
 	];
 
+	const columnOptions = [
+		{ value: '1col', label: __( 'One Column', 'wp-plugin-info-card' ) },
+		{ value: '2col', label: __( 'Two Columns', 'wp-plugin-info-card' ) },
+		{ value: '3col', label: __( 'Three Columns', 'wp-plugin-info-card' ) },
+		{ value: '4col', label: __( 'Four Columns', 'wp-plugin-info-card' ) },
+	];
+
 	const layoutClass = 'card' === layout ? 'wp-pic-card' : layout;
-	const previewLoadingClass = cardLoading ? 'wp-pic-spin' : '';
 
 	const inspectorControls = (
 		<InspectorControls>
